@@ -38,7 +38,7 @@ func (a *App) Initialise() {
 	}
 	fmt.Println("Connected to MongoDB")
 
-	a.Router = mux.NewRouter()
+	a.Router = mux.NewRouter().StrictSlash(true)
 	a.initialiseRoutes()
 }
 
