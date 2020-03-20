@@ -11,6 +11,9 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+const mongoURI = "mongodb://localhost:27017"
+const databaseName = "vidly-go"
+
 // App defines the application
 type App struct {
 	Router *mux.Router
@@ -40,12 +43,12 @@ func (a *App) Initialise() {
 }
 
 func (a *App) connectDatabase(ctx context.Context) (*mongo.Database, error) {
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017"))
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(mongoURI))
 	if err != nil {
 		return nil, err
 	}
 
-	database := client.Database("vidly-go")
+	database := client.Database(databaseName)
 	return database, nil
 }
 
