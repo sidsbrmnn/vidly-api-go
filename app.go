@@ -45,7 +45,7 @@ func (a *App) connectDatabase(ctx context.Context) (*mongo.Database, error) {
 		return nil, err
 	}
 
-	database := client.Database("")
+	database := client.Database("vidly-go")
 	return database, nil
 }
 
