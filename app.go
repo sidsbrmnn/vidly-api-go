@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -51,8 +50,3 @@ func (a *App) connectDatabase(ctx context.Context) (*mongo.Database, error) {
 }
 
 func (a *App) initialiseRoutes() {}
-
-func dbContext(i time.Duration) (context.Context, context.CancelFunc) {
-	ctx, cancel := context.WithTimeout(context.Background(), i*time.Second)
-	return ctx, cancel
-}
