@@ -52,4 +52,9 @@ func (a *App) connectDatabase(ctx context.Context) (*mongo.Database, error) {
 	return database, nil
 }
 
-func (a *App) initialiseRoutes() {}
+func (a *App) initialiseRoutes() {
+	a.Router.HandleFunc("/api/genres", a.getGenres).Methods("GET")
+	a.Router.HandleFunc("/api/genres/{id}", a.getGenre).Methods("GET")
+	a.Router.HandleFunc("/api/genres", a.postGenre).Methods("POST")
+	a.Router.HandleFunc("/api/genres/{id}", a.deleteGenre).Methods("DELETE")
+}
