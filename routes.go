@@ -9,6 +9,20 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+// Route defines a single endpoint
+type Route struct {
+	Path    string
+	Handler func(http.ResponseWriter, *http.Request)
+	Method  string
+}
+
+// Subrouter defines a set of routes
+// for a single path prefix
+type Subrouter struct {
+	Routes []Route
+	Prefix string
+}
+
 func (a *App) getGenres(w http.ResponseWriter, r *http.Request) {
 	genres, err := findAllGenres(a.Db)
 	if err != nil {

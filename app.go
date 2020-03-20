@@ -53,8 +53,22 @@ func (a *App) connectDatabase(ctx context.Context) (*mongo.Database, error) {
 }
 
 func (a *App) initialiseRoutes() {
-	a.Router.HandleFunc("/api/genres", a.getGenres).Methods("GET")
-	a.Router.HandleFunc("/api/genres/{id}", a.getGenre).Methods("GET")
-	a.Router.HandleFunc("/api/genres", a.postGenre).Methods("POST")
-	a.Router.HandleFunc("/api/genres/{id}", a.deleteGenre).Methods("DELETE")
+	subrouters := []Subrouter{
+		Subrouter{
+			Prefix: "/api/genres",
+			Routes: []Route{
+				Route{"/", a.getGenres, "GET"},
+				Route{"/{id}", a.getGenre, "GET"},
+				Route{"/", a.postGenre, "POST"},
+				Route{"/{id}", a.deleteGenre, "DELETE"},
+			},
+		},
+	}
+
+	for _, router := range subrouters {
+		subrouter := a.Router.PathPrefix(router.Prefix).Subrouter()
+		for _, endpoint := range router.Routes {
+			subrouter.HandleFunc(endpoint.Path, endpoint.Handler).Methods(endpoint.Method)
+		}
+	}
 }
